@@ -20,7 +20,9 @@ const TableStanding: React.FC<Props> = ({ standings, playersPoint, membersData }
 
   useEffect(() => {
     async function fetchStaticData() {
-      const res = await axios.get('/api/static').then((res) => res.data)
+      const res = await axios.get('/api/static').then((res) => {
+        return JSON.parse(res.data)
+      })
       if (Array.isArray(res.elements)) {
         let obj: any = {}
         for (let element of res.elements) {
@@ -37,6 +39,7 @@ const TableStanding: React.FC<Props> = ({ standings, playersPoint, membersData }
     const { element: elementId, is_captain, is_vice_captain, position } = member
     const data = playersPoint[elementId - 1]
     const elementData = elements[elementId]
+    // console.log('--elements--', elements)
     if (data && data.stats && elementData) {
       const elementData = elements[elementId]
       const stats = data.stats

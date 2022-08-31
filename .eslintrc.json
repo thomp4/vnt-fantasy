@@ -21,6 +21,8 @@
   },
   "plugins": ["react", "@typescript-eslint/eslint-plugin"],
   "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
     "react/prop-types": 0,
     "react/jsx-uses-react": 0,
     "react/jsx-uses-vars": "error",

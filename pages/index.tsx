@@ -74,26 +74,25 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
   }, [data])
 
   useEffect(() => {
-    if (data && data.standings && currentEvent) {
-      async function fetchDataPlayer() {
-        const results: any[] = data.standings.results
-        const promiseArr: any[] = []
-        for (let item of results) {
-          promiseArr.push(axios.get(`/api/entry/${item.entry}/${currentEvent}/`).then((res) => res.data))
-        }
-        try {
-          const resPickteam = await Promise.all(promiseArr)
-          let members: any = {}
-          for (let i = 0; i < results.length; i++) {
-            const entry = results[i].entry
-            members[entry] = resPickteam[i]
-          }
-          setMembersData(members)
-        } catch (err) {
-          console.log(err)
-        }
+    async function fetchDataPlayer() {
+      const results: any[] = data.standings.results
+      const promiseArr: any[] = []
+      for (let item of results) {
+        promiseArr.push(axios.get(`/api/entry/${item.entry}/${currentEvent}/`).then((res) => res.data))
       }
-
+      try {
+        const resPickteam = await Promise.all(promiseArr)
+        let members: any = {}
+        for (let i = 0; i < results.length; i++) {
+          const entry = results[i].entry
+          members[entry] = resPickteam[i]
+        }
+        setMembersData(members)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    if (data && data.standings && currentEvent) {
       fetchDataPlayer()
     }
   }, [data, currentEvent])
