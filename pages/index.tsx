@@ -25,6 +25,8 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
   const [playersPoint, setPlayersPoint] = useState<any[]>([])
   const [membersData, setMembersData] = useState<any>({})
 
+  // console.log('--data---', data)
+
   useEffect(() => {
     if (data && data.standings) {
       const results: any[] = data.standings.results
@@ -113,8 +115,10 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
 
   return (
     <Layout>
-      <div className={'mt-10'}>
-        <h1 className={'mb-4 px-4'}>Team</h1>
+      <h1 className={'mt-10 text-center font-bold text-3xl uppercase'}>{data.league.name} league</h1>
+
+      <div className={'mt-6'}>
+        <h2 className={'mb-4 px-4 font-medium text-xl'}>Team</h2>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>

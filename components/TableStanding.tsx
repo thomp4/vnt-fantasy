@@ -18,8 +18,6 @@ interface Props {
 const TableStanding: React.FC<Props> = ({ standings, playersPoint, membersData }) => {
   const [elements, setElements] = useState<any>({})
 
-  console.log('--standings--', standings)
-
   useEffect(() => {
     async function fetchStaticData() {
       const res = await axios.get('/api/static').then((res) => res.data)
@@ -82,7 +80,7 @@ const TableStanding: React.FC<Props> = ({ standings, playersPoint, membersData }
 
   return (
     <div>
-      <h1 className={'mb-4 px-4'}>Solo</h1>
+      <h2 className={'mb-4 px-4 font-medium text-xl'}>Solo</h2>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
