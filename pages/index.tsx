@@ -24,6 +24,7 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
   const [teams, setTeams] = useState<any[]>([])
   const [playersPoint, setPlayersPoint] = useState<any[]>([])
   const [membersData, setMembersData] = useState<any>({})
+  const [membersTransfer, setMembersTransfer] = useState<any>({})
 
   // console.log('--data---', data)
 
@@ -73,6 +74,7 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
     }
   }, [data])
 
+  // fetch data for each member
   useEffect(() => {
     async function fetchDataPlayer() {
       const results: any[] = data.standings.results
@@ -97,6 +99,33 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
     }
   }, [data, currentEvent])
 
+  // get transfer history
+  useEffect(() => {
+    async function fetchTransfers() {
+      const results: any[] = data.standings.results
+      const promiseArr: any[] = []
+      for (let item of results) {
+        promiseArr.push(axios.get(`/api/entry/${item.entry}/transfer/`).then((res) => res.data))
+      }
+      try {
+        const resTransfer = await Promise.all(promiseArr)
+        let transfers: any = {}
+        for (let i = 0; i < results.length; i++) {
+          const entry = results[i].entry
+          transfers[entry] = resTransfer[i]
+        }
+        setMembersTransfer(transfers)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    if (data && data.standings) {
+      fetchTransfers()
+    }
+  }, [data])
+
+  // get players data
   useEffect(() => {
     async function fetchLiveData() {
       try {
@@ -116,7 +145,7 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
     <Layout>
       <h1 className={'mt-10 text-center font-bold text-3xl uppercase'}>{data.league.name} league</h1>
 
-      <div className={'mt-6'}>
+      <div className={'mt-6 mb-10'}>
         <h2 className={'mb-4 px-4 font-medium text-xl'}>Team</h2>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
@@ -168,7 +197,13 @@ const Home: NextPage<Props> = ({ data, currentEvent }) => {
 
         <div className={'my-6'} />
 
-        <TableStanding standings={standings} membersData={membersData} playersPoint={playersPoint} />
+        <TableStanding
+          standings={standings}
+          membersData={membersData}
+          membersTransfer={membersTransfer}
+          playersPoint={playersPoint}
+          currentEvent={currentEvent}
+        />
       </div>
     </Layout>
   )
