@@ -168,8 +168,10 @@ const TableStanding: React.FC<Props> = ({ standings, playersPoint, membersData, 
           <TableBody>
             {standings.map((row) => (
               <TableRow key={row.entry} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row" classes={{ root: 'flex gap-3' }}>
-                  <span>{row.rank}</span> <span>{renderUpDownRank(row)}</span>
+                <TableCell component="th" scope="row">
+                  <div className={'flex gap-3'}>
+                    <span>{row.rank}</span> <span>{renderUpDownRank(row)}</span>
+                  </div>
                 </TableCell>
                 <TableCell align="left">
                   <div className={'flex flex-col'}>
